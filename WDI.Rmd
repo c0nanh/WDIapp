@@ -1,0 +1,26 @@
+---
+title: "Interactive slides using World Bank WDI data"
+author: "C Hales"
+date: "April 2017"
+output: ioslides_presentation
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Introduction
+
+- This is a short presentation of how the WDI app works.  
+- The data is sourced from public data provided by the World Bank development indices using the package [WDI](https://github.com/vincentarelbundock/WDI).
+- The G20 individual countries were selected for the exercise.
+- The date of the presentation is `r format(Sys.time(), "%d %B, %Y")`.
+
+
+## Usage of the App
+
+- Select the country or coutnries to be plotted using the radio buttons on the left.
+- On the right, this plots both the life expectancy and the GDP per capita time series.
+
+Need to slidfiy code snippet and run

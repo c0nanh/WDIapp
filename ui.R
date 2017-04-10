@@ -7,7 +7,7 @@ library("shiny")
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("World Developing Indicators: GDP per capita and Life Exepctancy"),
+  titlePanel("World Developing Indicators: GDP per capita and Life Expectancy"),
   
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
@@ -24,3 +24,7 @@ shinyUI(fluidPage(
     )
   )
 ))
+
+#add tab for documentation
+#slider for time range
+#average GDP / Life expectancy table?
