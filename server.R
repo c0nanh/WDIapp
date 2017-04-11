@@ -3,19 +3,26 @@
 
 library("WDI")
 library("plotly")
-library("plyr")
+#library("plyr")
 library("shiny")
 
 #SP.DYN.LE00.IN : Life expectancy at birth, total (years)
 #NY.GDP.MKTP.CD : GDP (current US$)
 #NY.GDP.PCAP.PP.KD : "GDP per capita, PPP (constant 2005 international $)"
 
-dat = WDI(indicator=c("SP.DYN.LE00.IN","NY.GDP.PCAP.PP.KD"), country=c("AR","AU","BR","CA","CN","FR","DE","IN","ID","IT","JP","KR","MX","RU","SA","ZA","TR","GB","US"), start=1985, end=2014)
+START = 1990
+END = 2014
+
+dat = WDI(indicator=c("SP.DYN.LE00.IN","NY.GDP.PCAP.PP.KD"), 
+          country=c("AR","AU","BR","CA","CN","FR","DE","IN","ID",
+                    "IT","JP","KR","MX","RU","SA","ZA","TR","GB","US"), 
+          start=START, end=END)
 
 names(dat)[4] <- "Life_Expectancy"
 names(dat)[5] <- "GDP_per_capita"
 
 CountryList <- sort(unique(dat$country),decreasing=FALSE)
+YearRange <- seq(START,END)
 
 # Define server logic required to draw a histogram
 shinyServer(function(input, output) { 
@@ -23,8 +30,18 @@ shinyServer(function(input, output) {
   # Define and initialize reactive values
   values <- reactiveValues()
   values$CountryList <- CountryList
+  values$YearRange <- YearRange
 
-  # Create event type checkbox
+  # Create UI from server side for year range and countries
+#  output$YearRange <- renderUI({
+#    sliderInput("range", 
+#                label = h4("Year Range:"), 
+#                min = START, 
+#                max = END, 
+#                value = c(min(values$YearRange), max(values$YearRange)),
+#                format="####")
+#  })
+  
   output$countryChecklist <- renderUI({
     checkboxGroupInput("CountryList",
                        label = h4("Countries"), 
@@ -41,10 +58,15 @@ shinyServer(function(input, output) {
   observe({
     if(input$select_all == 0) return()
     values$CountryList <- CountryList
-  })  
+  })
+
+#  values$YearRange <- reactive({
+#    seq(input$YearRange[1],input$YearRange[2]) 
+#  })
   
-  filteredData <- reactive({ 
-    dat[dat$country %in% input$CountryList, ]
+  # data selection from user input
+  filteredData <- reactive({
+    dat[which(dat$country %in% input$CountryList), ]
   })
   
   output$GDP <- renderPlotly({

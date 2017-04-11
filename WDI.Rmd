@@ -8,6 +8,8 @@ runtime: shiny
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library("plotly")
+library("WDI")
 ```
 
 ## Introduction
@@ -18,9 +20,58 @@ knitr::opts_chunk$set(echo = FALSE)
 - The date of the presentation is `r format(Sys.time(), "%d %B, %Y")`.
 
 
-## Usage of the App
-
+## Usage of the App and links
+- The app was developed using shiny.
 - Select the country or coutnries to be plotted using the radio buttons on the left.
-- On the right, this plots both the life expectancy and the GDP per capita time series.
+- On the right, plots are rendered for both the life expectancy and the GDP per capita time series for the countries selected.
 
-Need to slidfiy code snippet and run
+###Links
+
+- [shiny app hosted on public website](https://c0nan.shinyapps.io/WDIapp/)
+- [Git repository of source code](https://github.com/c0nanh/WDIapp)
+
+## Code snippet used for plotly
+
+START = 1990
+END = 2014
+
+dat = WDI(indicator=c("SP.DYN.LE00.IN","NY.GDP.PCAP.PP.KD"), 
+          country=c("AR","AU","BR","CA","CN","FR","DE","IN","ID",
+                    "IT","JP","KR","MX","RU","SA","ZA","TR","GB","US"), 
+          start=START, end=END)
+
+names(dat)[4] <- "Life_Expectancy"  
+names(dat)[5] <- "GDP_per_capita"
+
+plot_ly(data=dat,  
+        x=~year,  
+        y=~Life_Expectancy,  
+        z=~GDP_per_capita,  
+        type="scatter3d",  
+        mode="markers",  
+        color=factor(dat$country),  
+        name="3D")  
+
+## 3D Scatterplot of data
+
+```{r 3Dplot, echo=FALSE, warning=FALSE, error=FALSE}
+START = 1990
+END = 2014
+
+dat = WDI(indicator=c("SP.DYN.LE00.IN","NY.GDP.PCAP.PP.KD"), 
+          country=c("AR","AU","BR","CA","CN","FR","DE","IN","ID",
+                    "IT","JP","KR","MX","RU","SA","ZA","TR","GB","US"), 
+          start=START, end=END)
+
+names(dat)[4] <- "Life_Expectancy"
+names(dat)[5] <- "GDP_per_capita"
+
+plot_ly(data=dat,
+        x=~year,
+        y=~Life_Expectancy,
+        z=~GDP_per_capita,
+        type="scatter3d",
+        mode="markers",
+        color=factor(dat$country),
+        name="3D")
+```
