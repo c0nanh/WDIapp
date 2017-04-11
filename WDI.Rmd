@@ -24,6 +24,7 @@ library("WDI")
 - The app was developed using shiny.
 - Select the country or coutnries to be plotted using the radio buttons on the left.
 - On the right, plots are rendered for both the life expectancy and the GDP per capita time series for the countries selected.
+- The average life expectancy and average GDP for the selected countries is calculated and reported above each chart.
 
 ###Links
 

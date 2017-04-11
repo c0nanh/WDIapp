@@ -69,6 +69,18 @@ shinyServer(function(input, output) {
     dat[which(dat$country %in% input$CountryList), ]
   })
   
+  output$Expected_Life <- renderText({
+    paste("Mean Life Expectancy (years) for selected countries in final year = ", 
+          signif(mean(dat[which(dat$country %in% input$CountryList & dat$year == END), ]$Life_Expectancy), digits = 5)
+    )
+  })
+  
+  output$Average_GDP <- renderText({
+    paste("Mean GDP per capita ($) for selected countries in final year = ", 
+          signif(mean(dat[which(dat$country %in% input$CountryList & dat$year == END), ]$GDP_per_capita), digits = 5)
+    )
+  })     
+  
   output$GDP <- renderPlotly({
     plot_ly(
       filteredData(),  

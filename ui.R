@@ -23,8 +23,10 @@ shinyUI(fluidPage(
     # Show a plot of the generated distribution
     mainPanel(
       a(href="https://c0nan.shinyapps.io/wdipresentation/","About this shiny app"),
-      plotlyOutput("GDP"),
-      plotlyOutput("Life_Expectancy")
+      textOutput("Expected_Life"),
+      plotlyOutput("Life_Expectancy"),
+      textOutput("Average_GDP"),
+      plotlyOutput("GDP")
     )
   )
 ))
