@@ -1,5 +1,5 @@
 ---
-title: "Interactive slides using World Bank WDI data"
+title: "Shiny app using World Bank data"
 author: "C Hales"
 date: "April 2017"
 output: ioslides_presentation
@@ -31,29 +31,10 @@ library("WDI")
 - [shiny app hosted on public website](https://c0nan.shinyapps.io/WDIapp/)
 - [Git repository of source code](https://github.com/c0nanh/WDIapp)
 
-## Code snippet used for plotly
 
-START = 1990
-END = 2014
+## Average life expectancy
 
-dat = WDI(indicator=c("SP.DYN.LE00.IN","NY.GDP.PCAP.PP.KD"), 
-          country=c("AR","AU","BR","CA","CN","FR","DE","IN","ID",
-                    "IT","JP","KR","MX","RU","SA","ZA","TR","GB","US"), 
-          start=START, end=END)
-
-names(dat)[4] <- "Life_Expectancy"  
-names(dat)[5] <- "GDP_per_capita"
-
-plot_ly(data=dat,  
-        x=~year,  
-        y=~Life_Expectancy,  
-        z=~GDP_per_capita,  
-        type="scatter3d",  
-        mode="markers",  
-        color=factor(dat$country),  
-        name="3D")  
-
-## 3D Scatterplot of data
+The average life expectancy for the G20 individual countries in 2014 is below:
 
 ```{r 3Dplot, echo=FALSE, warning=FALSE, error=FALSE}
 START = 1990
@@ -67,12 +48,31 @@ dat = WDI(indicator=c("SP.DYN.LE00.IN","NY.GDP.PCAP.PP.KD"),
 names(dat)[4] <- "Life_Expectancy"
 names(dat)[5] <- "GDP_per_capita"
 
-plot_ly(data=dat,
-        x=~year,
-        y=~Life_Expectancy,
-        z=~GDP_per_capita,
-        type="scatter3d",
-        mode="markers",
-        color=factor(dat$country),
-        name="3D")
+signif(mean(dat[dat$year == END, ]$Life_Expectancy), digits = 5)
+
+#plot_ly(data=dat,
+#        x=~year,
+#        y=~Life_Expectancy,
+#        z=~GDP_per_capita,
+#        type="scatter3d",
+#        mode="markers",
+#        color=factor(dat$country),
+#        name="3D")
 ```
+
+The app gives an interactive calcuation where the user can select the countries for the average.
+
+## Code snippet for Life Expectancy
+
+START = 1990  
+END = 2014
+
+dat = WDI(indicator=c("SP.DYN.LE00.IN","NY.GDP.PCAP.PP.KD"), 
+          country=c("AR","AU","BR","CA","CN","FR","DE","IN","ID",
+                    "IT","JP","KR","MX","RU","SA","ZA","TR","GB","US"), 
+          start=START, end=END)
+
+names(dat)[4] <- "Life_Expectancy"  
+names(dat)[5] <- "GDP_per_capita"
+
+signif(mean(dat[dat$year == END, ]$Life_Expectancy), digits = 5)
